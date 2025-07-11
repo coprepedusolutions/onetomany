@@ -17,6 +17,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.myliveclasssproject.app.ui.theme.MyLiveClassProjectTheme
+import com.mysdk.app.DataActivity
+
+import android.content.Intent
+import androidx.compose.foundation.clickable
+import androidx.compose.ui.unit.dp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +36,9 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding),
                         contentAlignment = Alignment.Center
                     ) {
-                        Greeting(name = "I am from Library")
+                        Greeting("Click to open Library Activity") {
+                            startActivity(Intent(this@MainActivity, DataActivity::class.java))
+                        }
                     }
                 }
             }
@@ -39,18 +46,22 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun Greeting(name: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Text(
-        text =name,
-        modifier = modifier,
+        text = name,
+        modifier = modifier
+            .padding(16.dp)
+            .clickable { onClick() },
         style = TextStyle(
-            colorResource(id = R.color.purple_200),
+            color = colorResource(id = R.color.purple_200),
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
     )
 }
+
 
 @Preview(showBackground = true)
 @Composable
@@ -60,7 +71,7 @@ fun GreetingPreview() {
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Greeting("I am from Library")
+            Greeting("I am from Library",onClick = {})
         }
     }
 }
